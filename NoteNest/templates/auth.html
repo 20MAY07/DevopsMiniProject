@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ 'Create account' if mode == 'register' else 'Log in' }} — NoteNest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-body">
+  <nav class="navbar">
+    <a class="brand" href="{{ url_for('index') }}"><span class="brand-icon">N</span><span>Note<span class="brand-accent">Nest</span></span></a>
+    <a class="nav-link" href="{{ url_for('index') }}">← Back to notes</a>
+  </nav>
+  <main class="auth-wrap">
+    <div class="auth-decoration"><span>✦</span><div class="auth-book">N</div><span>✳</span></div>
+    <section class="auth-card">
+      <span class="eyebrow">YOUR STUDY COMMUNITY</span>
+      <h1>{{ 'Create your account' if mode == 'register' else 'Welcome back' }}</h1>
+      <p>{{ 'Join NoteNest and share useful notes with your classmates.' if mode == 'register' else 'Log in to share notes and manage your uploads.' }}</p>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}<div class="flash-list">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+      {% endwith %}
+      <form method="post" class="auth-form">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" minlength="3" maxlength="30" placeholder="Choose a username" required autocomplete="username">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" minlength="6" placeholder="At least 6 characters" required autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}">
+        <button class="primary-btn" type="submit">{{ 'Create account' if mode == 'register' else 'Log in' }} <span>→</span></button>
+      </form>
+      <div class="auth-switch">
+        {% if mode == 'register' %}Already have an account? <a href="{{ url_for('login') }}">Log in</a>
+        {% else %}New to NoteNest? <a href="{{ url_for('register') }}">Create an account</a>{% endif %}
+      </div>
+      <div class="auth-note">Your password is stored as a secure hash, not plain text.</div>
+    </section>
+  </main>
+</body>
+</html>
